@@ -17,3 +17,7 @@ void Semaphore::Signal() {
 	if (count_ <= 0)
 		cv_.notify_one();
 }
+
+int Semaphore::count() const {
+	return count_;
+}

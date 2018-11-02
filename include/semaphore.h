@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <condition_variable>
+#include <functional>
 
 class Semaphore {
 private:
@@ -13,4 +14,5 @@ public:
 	explicit Semaphore(int count);
 	void Wait();
 	void Signal();
+	int count() const;
 };
