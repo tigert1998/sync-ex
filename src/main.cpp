@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstring>
 #include <atomic>
+#include <array>
 
 #include "car_data.h"
 #include "semaphore.h"
@@ -15,12 +16,12 @@ using std::condition_variable, std::unique_lock, std::flush;
 array<mutex, 4> resources, queue_in_dir;
 vector<thread> ths;
 thread dead_lock_detecting_th;
-std::atomic_int	current_thread_total;
+std::atomic_int current_thread_total;
 Semaphore sema(3);
 
 void log(bool is_deadlock, bool is_arrive, const CarData *car_data_ptr) {
 	static mutex mtx;
-	
+
 	if (is_deadlock) {
 		lock_guard<mutex> lck(mutex);
 		cout << "DEADLOCK: car jam detected\n" << flush;
@@ -56,7 +57,7 @@ void DeadLockDetecting() {
 	while (current_thread_total > 0) {
 		if (sema.count() < 0 && !tag) {
 			tag = true;
-			log(true, false, nullptr);	
+			log(true, false, nullptr);
 		} else if (sema.count() >= 0) {
 			tag = false;
 		}
